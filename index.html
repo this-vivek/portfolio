@@ -172,7 +172,12 @@ body{ scroll-snap-type:y proximity; }
   body{ scroll-snap-type:none; }
   [data-parallax]{ transform:none !important; }
 }
-
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.stat-chip{
+  padding:8px 12px;border-radius:999px;
+  border:1px solid var(--glass-stroke);background:var(--glass-bg);
+  color:#cbd5e1;font-size:12px;backdrop-filter:blur(var(--card-blur))
+}
   </style>
 </head>
 <body>
@@ -200,6 +205,9 @@ body{ scroll-snap-type:y proximity; }
     <div class="hero">
       <div>
         <span class="pill">Data Engineering • Azure • Purview</span>
+        <div class="stats">
+          <div class="stat-chip"><span data-exp></span> experience</div>
+        </div>
         <h1>Results‑driven Data Engineer focused on performance, cost, and data quality</h1>
         <p>I architect, build, and optimize enterprise‑grade platforms on Microsoft Azure — covering real‑time ingestion, batch analytics, governance, and observability. I deliver scalable systems with automation-first thinking and production‑ready reliability.</p>
         <div class="cta">
@@ -224,7 +232,7 @@ body{ scroll-snap-type:y proximity; }
     </div>
     <div class="section-body">
       <article class="card reveal" style="padding:24px; line-height:1.75">
-        <p><strong>I am Vivek Rawat</strong>, a results‑driven Data Engineer with a proven track record of architecting, developing, and optimizing enterprise‑grade data platforms on Microsoft Azure. My expertise spans the full data lifecycle — from real‑time ingestion to analytics and governance — with a strong focus on performance, cost optimization, and data quality.</p>
+        <p><strong>I am Vivek Rawat</strong>, a results-driven Data Engineer with <strong><span data-exp></span></strong> of experience with a proven track record of architecting, developing, and optimizing enterprise‑grade data platforms on Microsoft Azure. My expertise spans the full data lifecycle — from real‑time ingestion to analytics and governance — with a strong focus on performance, cost optimization, and data quality.</p>
         <p>I specialize in designing and implementing streaming and batch pipelines using <strong>Azure EventHub</strong>, <strong>Kafka</strong>, and <strong>PySpark</strong>, storing and managing data on <strong>Delta Lake</strong> with ACID guarantees, and orchestrating workloads through <strong>Azure Data Factory</strong>. I leverage <strong>Microsoft Purview</strong> for enterprise‑wide data governance, lineage tracking, glossary tagging, and compliance.</p>
         <p>I am deeply committed to coding best practices, delivery excellence, and operational reliability. My work philosophy is centered on automation, observability, and scalability, ensuring that data systems meet current business needs and can adapt to future growth. I thrive in hybrid/remote environments, collaborate closely with stakeholders, and take ownership from concept to production deployment.</p>
       </article>
@@ -254,7 +262,7 @@ body{ scroll-snap-type:y proximity; }
 <!-- EXPERIENCE -->
 <section id="experience" class="section container expanded">
   <div class="section-head">
-    <h2>Experience</h2>
+    <h2>Experience <span class="muted">— <span data-exp></span></span></h2>
     <button class="toggle" data-target="#experience">Toggle <span class="chev">▾</span></button>
   </div>
   <div class="section-body">
@@ -435,6 +443,13 @@ document.querySelectorAll('.reveal').forEach(el=> iot.observe(el));
   window.addEventListener('scroll', onScroll, {passive:true});
   loop();
 })();
+    (function(){
+  const start = new Date('2022-01-01'); // your career start
+  const yrs = (Date.now() - start) / (1000*60*60*24*365.25);
+  const label = (Math.floor(yrs*10)/10).toFixed(1) + '+ years';
+  document.querySelectorAll('[data-exp]').forEach(el => el.textContent = label);
+})();
+
   </script>
 </body>
 </html>
