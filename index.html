@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vivek Rawat | Data Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-start:#0a0a0f;
+      --bg-end:#1a1a2e;
+      --accent:#5ee7ff;
+      --accent-2:#a78bfa;
+      --text:#e6e6f0;
+      --muted:#a3a3b5;
+      --glass-bg:rgba(255,255,255,0.06);
+      --glass-stroke:rgba(255,255,255,0.14);
+      --card-blur:16px;
+      --radius:22px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    html{scroll-behavior:smooth}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,var(--bg-start),var(--bg-end)) fixed;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .bg-orb{position:fixed; filter:blur(90px); opacity:.35; z-index:-1;}
+    .bg-orb.one{width:480px;height:480px;background:#4f46e5; top:-120px; left:-120px;}
+    .bg-orb.two{width:520px;height:520px;background:#06b6d4; bottom:-160px; right:-160px;}
+
+    
+    header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(14px); background:linear-gradient(180deg, rgba(10,10,15,.85), rgba(10,10,15,.55)); border-bottom:1px solid rgba(255,255,255,.07)}
+    .nav{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.5px}
+    .brand .dot{width:10px;height:10px;border-radius:50%; background:linear-gradient(45deg,var(--accent),var(--accent-2)); box-shadow:0 0 15px var(--accent)}
+    .menu{list-style:none; display:flex; gap:22px; margin:0; padding:0; flex-wrap:wrap}
+    .menu a{color:var(--text); text-decoration:none; font-weight:500; display:block; padding:8px 0}
+    .hamb{display:none; width:38px; height:38px; border-radius:12px; border:1px solid var(--glass-stroke); background:var(--glass-bg); backdrop-filter:blur(var(--card-blur)); align-items:center; justify-content:center}
+    .hamb span{display:block; width:18px; height:2px; background:#fff; position:relative}
+    .hamb span::before,.hamb span::after{content:""; position:absolute; left:0; right:0; height:2px; background:#fff}
+    .hamb span::before{top:-6px} .hamb span::after{top:6px}
+    @media (max-width: 860px){ .menu{display:none; flex-direction:column; width:100%} .menu.open{display:flex} .hamb{display:flex} }
+    /* Make the brand name large at top, shrink on scroll with animation */
+    .brand .name{
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: .2px;
+    font-size: clamp(22px, 3.4vw, 32px);
+    transition: font-size .25s ease, letter-spacing .25s ease, transform .25s ease, opacity .25s ease;
+    white-space: nowrap;
+    }
+
+    /* Slightly bigger dot at top */
+    .brand .dot{ width:12px; height:12px; transition: width .25s ease, height .25s ease, box-shadow .25s ease; }
+
+    /* Header compacts on scroll */
+    .nav{ padding:16px 20px; transition: padding .25s ease; }
+
+    header.scrolled .brand .name{
+    font-size: clamp(16px, 2.2vw, 20px);
+    letter-spacing: .1px;
+    opacity: .95;
+    }
+
+    header.scrolled .brand .dot{ width:8px; height:8px; box-shadow:0 0 10px rgba(94,231,255,.6); }
+    header.scrolled .nav{ padding:8px 20px; }
+    .container{max-width:1200px; margin:0 auto; padding:0 20px}
+    .section{padding:84px 0}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; border:1px solid var(--glass-stroke); background:var(--glass-bg); backdrop-filter:blur(var(--card-blur)); color:#cbd5e1; font-size:12px}
+    .btn{display:inline-block; padding:13px 22px; border-radius:14px; background:linear-gradient(45deg,var(--accent),var(--accent-2)); color:#0a0a0f; font-weight:700; text-decoration:none; box-shadow:0 10px 22px rgba(93,234,255,.15); transform:translateY(0); transition:.25s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--glass-stroke)}
+
+    .card{background:var(--glass-bg); border-radius:var(--radius); box-shadow:var(--shadow); backdrop-filter:blur(var(--card-blur))}
+
+    .hero{display:grid; grid-template-columns:1.2fr .8fr; gap:36px; align-items:center}
+    .hero h1{font-size:44px; line-height:1.1; margin:8px 0 14px}
+    .hero p{color:var(--muted); max-width:760px}
+    .hero .cta{display:flex; gap:14px; flex-wrap:wrap; margin-top:18px}
+    .hero-visual{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0;          /* no extra frame around image */
+  background:none; 
+  border:0;
+  box-shadow:none;
+}
+
+.hero-visual img{
+  display:block;
+  width:clamp(120px, 28vw, 320px);  /* small on mobile, comfy on desktop */
+  height:auto;
+  border-radius:50%;                /* keep perfectly round */
+  border:3px solid var(--glass-stroke);
+  box-shadow:0 8px 25px rgba(0,0,0,.45);
+}
+/* Experience */
+.timeline{display:grid; gap:16px}
+.exp{padding:22px}
+.exp h3{margin:0 0 6px}
+.exp .meta{color:var(--muted); font-size:14px; margin:0 0 6px}
+.exp .loc{color:#cbd5e1; font-size:13px}
+
+    @media (max-width: 980px){ .hero{grid-template-columns:1fr;} .hero-visual{order:-1} .hero h1{font-size:36px} }
+
+    .section-head{display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:16px}
+    .section-head h2{margin:0; font-size:28px}
+    .muted{color:var(--muted); font-size:14px}
+
+    /* Collapsible controls */
+    .toggle{appearance:none; border:1px solid var(--glass-stroke); background:var(--glass-bg); color:var(--text); border-radius:12px; padding:8px 12px; font-weight:600; cursor:pointer; display:none}
+    .toggle .chev{display:inline-block; transition:transform .25s ease; margin-left:6px}
+    .section-body{display:block}
+    @media (max-width:860px){
+      .toggle{display:inline-flex; align-items:center}
+      .section.collapsed .section-body{display:none}
+      .section.expanded .toggle .chev{transform:rotate(180deg)}
+    }
+
+    /* Skills grid with icons over text */
+    .skills-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+    @media (max-width: 900px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
+    .skill{padding:20px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px}
+    .skill .icon{width:18px; height:18px; display:grid; place-items:center; border-radius:50%; background:var(--glass-bg); box-shadow:var(--shadow); font-size:18px}
+    .skill span{font-weight:600}
+
+    /* Projects */
+    .projects-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px}
+    @media (max-width: 980px){.projects-grid{grid-template-columns:1fr}}
+    .project{padding:22px}
+    .project h3{margin:0 0 6px}
+    .tag{display:inline-block; margin-right:8px; margin-top:10px; padding:4px 10px; font-size:12px; border-radius:999px; border:1px solid var(--glass-stroke); color:#cbd5e1}
+
+    /* Contact */
+    .contact .row{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+    @media (max-width: 900px){.contact .row{grid-template-columns:1fr}}
+
+    footer{padding:22px 0; color:#a7a7b8; text-align:center; border-top:1px solid rgba(255,255,255,.08)}
+
+    .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.visible{opacity:1; transform:none}
+    /* Smooth section snap (gentle, not sticky) */
+html { scroll-padding-top: 74px; } /* keeps anchors clear of the sticky header */
+body { scroll-snap-type: y proximity; }
+.section.container { scroll-snap-align: start; }
+
+/* Parallax helpers */
+[data-parallax] { will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  body { scroll-snap-type: none; }
+  [data-parallax] { transform: none !important; }
+}
+/* Smooth anchor offset below sticky header */
+html{ scroll-padding-top:74px; }
+
+/* Gentle section snapping (works up & down) */
+body{ scroll-snap-type:y proximity; }
+.section.container{ scroll-snap-align:start; }
+
+/* Parallax helpers */
+[data-parallax]{ will-change: transform; }
+@media (prefers-reduced-motion: reduce){
+  body{ scroll-snap-type:none; }
+  [data-parallax]{ transform:none !important; }
+}
+
+  </style>
+</head>
+<body>
+<div class="bg-orb one" data-parallax data-speed="0.15"></div>
+<div class="bg-orb two" data-parallax data-speed="0.25"></div>
+
+
+
+  <header>
+    <nav class="nav">
+      <div class="brand"><span class="dot"></span><span class="name">Vivek Rawat</span></div>
+      <button class="hamb" aria-label="Open menu" id="hamb"><span></span></button>
+      <ul class="menu" id="menu">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="section container" style="padding-top:72px;">
+    <div class="hero">
+      <div>
+        <span class="pill">Data Engineering • Azure • Purview</span>
+        <h1>Results‑driven Data Engineer focused on performance, cost, and data quality</h1>
+        <p>I architect, build, and optimize enterprise‑grade platforms on Microsoft Azure — covering real‑time ingestion, batch analytics, governance, and observability. I deliver scalable systems with automation-first thinking and production‑ready reliability.</p>
+        <div class="cta">
+          <a class="btn" href="#projects">View Projects</a>
+          <a class="btn ghost" href="#contact">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+  <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Vivek Rawat" data-parallax data-speed="0.08">
+
+
+</div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section container expanded">
+    <div class="section-head">
+      <h2>About</h2>
+      <button class="toggle" data-target="#about">Toggle <span class="chev">▾</span></button>
+    </div>
+    <div class="section-body">
+      <article class="card reveal" style="padding:24px; line-height:1.75">
+        <p><strong>I am Vivek Rawat</strong>, a results‑driven Data Engineer with a proven track record of architecting, developing, and optimizing enterprise‑grade data platforms on Microsoft Azure. My expertise spans the full data lifecycle — from real‑time ingestion to analytics and governance — with a strong focus on performance, cost optimization, and data quality.</p>
+        <p>I specialize in designing and implementing streaming and batch pipelines using <strong>Azure EventHub</strong>, <strong>Kafka</strong>, and <strong>PySpark</strong>, storing and managing data on <strong>Delta Lake</strong> with ACID guarantees, and orchestrating workloads through <strong>Azure Data Factory</strong>. I leverage <strong>Microsoft Purview</strong> for enterprise‑wide data governance, lineage tracking, glossary tagging, and compliance.</p>
+        <p>I am deeply committed to coding best practices, delivery excellence, and operational reliability. My work philosophy is centered on automation, observability, and scalability, ensuring that data systems meet current business needs and can adapt to future growth. I thrive in hybrid/remote environments, collaborate closely with stakeholders, and take ownership from concept to production deployment.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- SKILLS with icons over text -->
+  <section id="skills" class="section container expanded">
+    <div class="section-head">
+      <h2>Skills</h2>
+      <button class="toggle" data-target="#skills">Toggle <span class="chev">▾</span></button>
+    </div>
+    <div class="section-body">
+      <div class="skills-grid">
+        <div class="card skill reveal"><div class="icon">☁️</div><span>Azure</span></div>
+        <div class="card skill reveal"><div class="icon">🐍</div><span>PySpark</span></div>
+        <div class="card skill reveal"><div class="icon">💻</div><span>Python</span></div>
+        <div class="card skill reveal"><div class="icon">📡</div><span>EventHub</span></div>
+        <div class="card skill reveal"><div class="icon">🧩</div><span>Kafka</span></div>
+        <div class="card skill reveal"><div class="icon">🗃️</div><span>Delta Tables</span></div>
+        <div class="card skill reveal"><div class="icon">🛠️</div><span>Azure Data Factory</span></div>
+        <div class="card skill reveal"><div class="icon">🧭</div><span>Data Quality & Governance (Purview)</span></div>
+        <div class="card skill reveal"><div class="icon">🧮</div><span>Databricks</span></div>
+      </div>
+    </div>
+  </section>
+<!-- EXPERIENCE -->
+<section id="experience" class="section container expanded">
+  <div class="section-head">
+    <h2>Experience</h2>
+    <button class="toggle" data-target="#experience">Toggle <span class="chev">▾</span></button>
+  </div>
+  <div class="section-body">
+    <div class="timeline">
+      <article class="card exp reveal">
+        <h3>Data Engineer — Celebal Technologies</h3>
+        <p class="meta">Jan 2022 – Mar 2024 • Noida</p>
+        <p class="loc">Worked on data engineering projects across Azure and open-source stack, building and optimizing batch/stream pipelines and data models.</p>
+      </article>
+
+      <article class="card exp reveal">
+        <h3>Data Engineer — Tata Digital (Tata Neu)</h3>
+        <p class="meta">Mar 2024 – Present • Bangalore</p>
+        <p class="loc">Delivering enterprise-grade data platforms with a focus on performance, cost, observability, and governance across analytics use cases.</p>
+      </article>
+    </div>
+  </div>
+</section>
+  <!-- PROJECTS -->
+  <section id="projects" class="section container expanded">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <button class="toggle" data-target="#projects">Toggle <span class="chev">▾</span></button>
+    </div>
+    <div class="section-body">
+      <div class="projects-grid">
+        <article class="card project reveal">
+          <h3>Insurance Offer Engine</h3>
+          <p>Perosnalized term insurance offers based on demographics and other finance metrics of customer and rules. Reducing manual intervention by <strong>99.99%</strong>.</p>
+          <div class="tag">Databricks</div><div class="tag">PySpark</div><div class="tag">Delta Tables</div><div class="tag">Postgres</div>
+        </article>
+        <article class="card project reveal">
+          <h3>Data Quality Framework</h3>
+          <p>Pluggable, metadata‑driven rule engine (completeness, range, timeliness, uniqueness, referential integrity) integrated with Purview for lineage and automated YouTrack ticket creation via REST API.</p>
+          <div class="tag">PySpark</div><div class="tag">Purview</div><div class="tag">YouTrack API</div>
+        </article>
+        <article class="card project reveal">
+          <h3>Databricks Cost Dashboard</h3>
+          <p>Cost monitoring solution analyzing audit logs, optimizing partitioning, and automating hygiene jobs, achieving &gt;50% reduction in resource utilization and reducing job runtimes from 3 hours to 30 minutes.</p>
+          <div class="tag">Delta</div><div class="tag">PySpark</div><div class="tag">Automation</div>
+        </article>
+        <article class="card project reveal">
+  <h3>Real-time Streaming Pipeline (Spark Structured Streaming)</h3>
+  <p>Built a low-latency pipeline with Spark Structured Streaming to ingest events from Kafka/EventHub, apply watermarking & windowed aggregations, and land curated data into Delta for analytics & ML features. Implemented exactly-once semantics with checkpoints and robust failure recovery.</p>
+  <div class="tag">Spark Structured Streaming</div>
+  <div class="tag">Kafka / EventHub</div>
+  <div class="tag">PySpark</div>
+  <div class="tag">Delta Tables</div>
+  <div class="tag">Databricks</div>
+</article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section container expanded">
+    <div class="section-head">
+      <h2>Contact</h2>
+      <button class="toggle" data-target="#contact">Toggle <span class="chev">▾</span></button>
+    </div>
+    <div class="section-body">
+      <div class="contact">
+        <div class="row">
+          <div class="card item reveal" style="padding:22px">
+            <h3 style="margin-top:0">Email</h3>
+            <p><a href="mailto:rawatvivek239@gmail.com">rawatvivek239@gmail.com</a></p>
+          </div>
+          <div class="card item reveal" style="padding:22px">
+            <h3 style="margin-top:0">LinkedIn</h3>
+            <p><a href="https://www.linkedin.com/in/rawatvivek239" target="_blank" rel="noopener">linkedin.com/in/rawatvivek239</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container"> <span id="y"></span> Vivek Rawat • Data Engineer</div>
+  </footer>
+
+  <script>
+    const headerEl = document.querySelector('header');
+    function onScrollBrandShrink(){
+        const scrolled = window.scrollY > 20;
+        headerEl.classList.toggle('scrolled', scrolled);
+    }
+    window.addEventListener('scroll', onScrollBrandShrink, {passive:true});
+    onScrollBrandShrink(); // run once on load
+    // Mobile menu toggle
+    const hamb = document.getElementById('hamb');
+    const menu = document.getElementById('menu');
+    hamb?.addEventListener('click', ()=> menu.classList.toggle('open'));
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target);} });
+    }, {threshold:.18});
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Close menu when clicking a link (mobile)
+    document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', ()=> menu.classList.remove('open')));
+
+    // Year
+    // document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Collapsible: dropdown on headers in mobile; desktop always expanded
+    function setSectionModes(){
+      const mobile = window.matchMedia('(max-width:860px)').matches;
+      document.querySelectorAll('.section.container').forEach(sec=>{
+        if(mobile){
+          if(!sec.classList.contains('expanded') && !sec.classList.contains('collapsed')){
+            sec.classList.add('collapsed');
+          }
+        }else{
+          sec.classList.remove('collapsed');
+          sec.classList.add('expanded');
+        }
+      });
+    }
+
+    document.querySelectorAll('.toggle').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const sec = btn.closest('.section');
+        sec.classList.toggle('expanded');
+        sec.classList.toggle('collapsed');
+      });
+    });
+
+    window.addEventListener('resize', setSectionModes);
+    setSectionModes();
+// Reveal on scroll (re-animates when scrolling back up)
+const iot = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    }else{
+      // remove when leaving viewport so it can animate again when re-entering
+      e.target.classList.remove('visible');
+    }
+  });
+},{threshold:.18});
+document.querySelectorAll('.reveal').forEach(el=> iot.observe(el));
+
+/* Eased scroll + parallax (works up & down) */
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let target = window.scrollY, current = target;
+  let lastY = window.scrollY;
+  const body = document.body;
+
+  const els = Array.from(document.querySelectorAll('[data-parallax]')).map(el=>{
+    const speed = parseFloat(el.dataset.speed || '0.15');
+    return {el, speed};
+  });
+
+  function onScroll(){
+    target = window.scrollY;
+    const dirUp = target < lastY;
+    body.classList.toggle('scrolling-up', dirUp);
+    body.classList.toggle('scrolling-down', !dirUp);
+    lastY = target;
+  }
+
+  function loop(){
+    // ease toward target in both directions
+    current += (target - current) * 0.12;
+
+    // apply parallax
+    els.forEach(({el, speed})=>{
+      el.style.transform = `translateY(${-(current * speed)}px)`;
+    });
+
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  loop();
+})();
+  </script>
+</body>
+</html>
